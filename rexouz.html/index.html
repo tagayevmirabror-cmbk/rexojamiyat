@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REX SERVICE | Premium Gaming & Robux Store</title>
+    <!-- Telegram WebApp SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <!-- Google Fonts & FontAwesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-deep: #05050a;
+            --bg-card: rgba(13, 13, 25, 0.7);
+            --neon-blue: #00f0ff;
+            --neon-purple: #bd00ff;
+            --neon-green: #00ff66;
+            --neon-pink: #ff007f;
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
+            --border-glow: rgba(0, 240, 255, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Background Animated Particles/Glow */
+        .bg-glow {
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            background: 
+                radial-gradient(circle at 15% 20%, rgba(189, 0, 255, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 85% 80%, rgba(0, 240, 255, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(255, 0, 127, 0.1) 0%, transparent 60%);
+            animation: bgPulse 8s ease-in-out infinite alternate;
+        }
+
+        @keyframes bgPulse {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(1.05); opacity: 1; }
+        }
+
+        /* Container */
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 20px 16px 50px 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Telegram User Profile Card */
+        .tg-profile-card {
+            background: linear-gradient(135deg, rgba(189, 0, 255, 0.1), rgba(0, 240, 255, 0.1));
+            border: 1.5px solid var(--neon-blue);
+            border-radius: 20px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
+            animation: borderGlow 3s infinite alternate;
+        }
+
+        @keyframes borderGlow {
+            0% { border-color: var(--neon-blue); box-shadow: 0 0 15px rgba(0, 240, 255, 0.2); }
+            50% { border-color: var(--neon-purple); box-shadow: 0 0 25px rgba(189, 0, 255, 0.4); }
+            100% { border-color: var(--neon-green); box-shadow: 0 0 15px rgba(0, 255, 102, 0.2); }
+        }
+
+        .tg-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 2px solid var(--neon-pink);
+            object-fit: cover;
+            background: #1a1a2e;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 800;
+            font-size: 24px;
+            color: var(--neon-pink);
+            box-shadow: 0 0 15px rgba(255, 0, 127, 0.4);
+        }
+
+        .tg-info h3 {
+            font-size: 18px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            margin-bottom: 4px;
+            background: linear-gradient(90deg, #fff, var(--neon-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .tg-info p {
+            font-size: 13px;
+            color: var(--neon-green);
+            font-weight: 600;
+        }
+
+        /* Main Header Banner */
+        .hero-banner {
+            text-align: center;
+            padding: 25px 15px;
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            backdrop-filter: blur(12px);
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(0, 240, 255, 0.05), transparent);
+            transform: rotate(45deg);
+            animation: shine 6s linear infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateY(-100%) rotate(45deg); }
+            100% { transform: translateY(100%) rotate(45deg); }
+        }
+
+        .badge-live {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(0, 255, 102, 0.1);
+            border: 1px solid var(--neon-green);
+            color: var(--neon-green);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            box-shadow: 0 0 10px rgba(0, 255, 102, 0.3);
+            animation: pulseBadge 2s infinite;
+        }
+
+        @keyframes pulseBadge {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.03); opacity: 0.8; }
+        }
+
+        .badge-live i {
+            font-size: 8px;
+            animation: blink 1s infinite alternate;
+        }
+
+        @keyframes blink {
+            0% { opacity: 0.2; }
+            100% { opacity: 1; }
+        }
+
+        .hero-banner h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 28px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple), var(--neon-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(0, 240, 255, 0.3);
+        }
+
+        .hero-banner p {
+            color: var(--text-muted);
+            font-size: 14px;
+            line-height: 1.5;
+            max-width: 380px;
+            margin: 0 auto;
+        }
+
+        /* Section Titles */
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 25px 0 14px 4px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-main);
+        }
+
+        .section-title i {
+            color: var(--neon-blue);
+            text-shadow: 0 0 10px var(--neon-blue);
+        }
+
+        /* Services Grid */
+        .services-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .service-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(0, 240, 255, 0.15);
+            border-radius: 18px;
+            padding: 18px 14px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--neon-blue);
+            box-shadow: 0 8px 25px rgba(0, 240, 255, 0.25);
+        }
+
+        .service-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--neon-blue), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .service-card:hover::after {
+            opacity: 1;
+        }
+
+        .service-icon {
+            width: 50px;
+            height: 50px;
+            margin: 0 auto 12px auto;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            background: rgba(0, 240, 255, 0.1);
+            color: var(--neon-blue);
+            box-shadow: inset 0 0 10px rgba(0, 240, 255, 0.2);
+        }
+
+        .service-card:nth-child(2) .service-icon {
+            background: rgba(189, 0, 255, 0.1);
+            color: var(--neon-purple);
+            box-shadow: inset 0 0 10px rgba(189, 0, 255, 0.2);
+        }
+
+        .service-card:nth-child(3) .service-icon {
+            background: rgba(255, 0, 127, 0.1);
+            color: var(--neon-pink);
+            box-shadow: inset 0 0 10px rgba(255, 0, 127, 0.2);
+        }
+
+        .service-card:nth-child(4) .service-icon {
+            background: rgba(0, 255, 102, 0.1);
+            color: var(--neon-green);
+            box-shadow: inset 0 0 10px rgba(0, 255, 102, 0.2);
+        }
+
+        .service-card h4 {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .service-card p {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        /* Links / Channels List */
+        .links-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .link-btn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 16px 20px;
+            border-radius: 16px;
+            text-decoration: none;
+            color: var(--text-main);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .link-btn:hover {
+            border-color: var(--neon-blue);
+            transform: translateX(4px);
+            box-shadow: 0 5px 20px rgba(0, 240, 255, 0.2);
+        }
+
+        .link-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .link-left i {
+            font-size: 20px;
+            width: 38px;
+            height: 38px;
+            background: rgba(0, 240, 255, 0.1);
+            color: var(--neon-blue);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .link-info h5 {
+            font-size: 15px;
+            font-weight: 700;
+            font-family: 'Orbitron', sans-serif;
+            margin-bottom: 2px;
+        }
+
+        .link-info span {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .link-arrow {
+            width: 32px;
+            height: 32px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--neon-blue);
+            transition: 0.3s;
+        }
+
+        .link-btn:hover .link-arrow {
+            background: var(--neon-blue);
+            color: var(--bg-deep);
+            box-shadow: 0 0 10px var(--neon-blue);
+        }
+
+        /* Direct Order CTA Button */
+        .cta-order {
+            margin-top: 25px;
+            display: block;
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
+            color: #fff;
+            text-align: center;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 16px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 16px;
+            text-decoration: none;
+            box-shadow: 0 0 25px rgba(0, 240, 255, 0.4);
+            transition: 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .cta-order:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 35px rgba(189, 0, 255, 0.6);
+            background: linear-gradient(135deg, var(--neon-purple), var(--neon-pink));
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .footer span {
+            color: var(--neon-pink);
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-glow"></div>
+
+    <div class="container">
+        
+        <!-- Telegram Dynamic User Card (Filled via Telegram WebApp SDK) -->
+        <div class="tg-profile-card" id="tgUserCard">
+            <div class="tg-avatar" id="tgAvatar">REX</div>
+            <div class="tg-info">
+                <h3 id="tgName">Hurmatli Mijoz</h3>
+                <p id="tgUsername">@rex0uz rasmiy xizmati</p>
+            </div>
+        </div>
+
+        <!-- Hero Banner -->
+        <div class="hero-banner">
+            <div class="badge-live">
+                <i class="fa-solid fa-circle"></i> 24/7 Avto Xizmat
+            </div>
+            <h1>REX SERVICE</h1>
+            <p>O'zbekistondagi eng tezkor, ishonchli va eng arzon gaming xizmatlar markazi!</p>
+        </div>
+
+        <!-- Services Section -->
+        <div class="section-title">
+            <i class="fa-solid fa-bolt"></i> Bizning Servislar
+        </div>
+
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon"><i class="fa-solid fa-coins"></i></div>
+                <h4>Robux</h4>
+                <p>Arzon narxlarda va darhol yetkazib berish</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon"><i class="fa-solid fa-gamepad"></i></div>
+                <h4>Brawl Stars</h4>
+                <p>Gemlar, Pass va ishonchli xizmatlar</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                <h4>Kafolat</h4>
+                <p>100% halol va xavfsiz savdo</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon"><i class="fa-solid fa-rocket"></i></div>
+                <h4>Tezkorlik</h4>
+                <p>Minimal foyda, maksimal tezlik</p>
+            </div>
+        </div>
+
+        <!-- Official Channels & Links -->
+        <div class="section-title">
+            <i class="fa-solid fa-link"></i> Rasmiy Sahifalar
+        </div>
+
+        <div class="links-stack">
+            <!-- Admin Lichka -->
+            <a href="https://t.me/rex0uz" target="_blank" class="link-btn">
+                <div class="link-left">
+                    <i class="fa-solid fa-headset"></i>
+                    <div class="link-info">
+                        <h5>Admin bilan bog'lanish</h5>
+                        <span>@rex0uz (Lichka)</span>
+                    </div>
+                </div>
+                <div class="link-arrow"><i class="fa-solid fa-chevron-right"></i></div>
+            </a>
+
+            <!-- Kanal -->
+            <a href="https://t.me/rexorb" target="_blank" class="link-btn">
+                <div class="link-left">
+                    <i class="fa-solid fa-bullhorn"></i>
+                    <div class="link-info">
+                        <h5>Asosiy Kanal</h5>
+                        <span>@rexorb (Yangiliklar)</span>
+                    </div>
+                </div>
+                <div class="link-arrow"><i class="fa-solid fa-chevron-right"></i></div>
+            </a>
+
+            <!-- Chat -->
+            <a href="https://t.me/rexorblx" target="_blank" class="link-btn">
+                <div class="link-left">
+                    <i class="fa-solid fa-comments"></i>
+                    <div class="link-info">
+                        <h5>Muloqot Chati</h5>
+                        <span>@rexorblx (Community)</span>
+                    </div>
+                </div>
+                <div class="link-arrow"><i class="fa-solid fa-chevron-right"></i></div>
+            </a>
+
+            <!-- Otziv Kanal -->
+            <a href="https://t.me/rexotzv" target="_blank" class="link-btn">
+                <div class="link-left">
+                    <i class="fa-solid fa-star"></i>
+                    <div class="link-info">
+                        <h5>Mijozlar Izohlari</h5>
+                        <span>@rexotzv (Otzivlar)</span>
+                    </div>
+                </div>
+                <div class="link-arrow"><i class="fa-solid fa-chevron-right"></i></div>
+            </a>
+        </div>
+
+        <!-- Direct CTA Button -->
+        <a href="https://t.me/rex0uz" target="_blank" class="cta-order">
+            <i class="fa-brands fa-telegram"></i> Buyurtma berish
+        </a>
+
+        <!-- Footer -->
+        <div class="footer">
+            Designed with <span>♥</span> for <strong>@rex0uz</strong> &bull; 2026
+        </div>
+
+    </div>
+
+    <!-- Telegram WebApp Initialization Script -->
+    <script>
+        // Telegram WebApp ni sozlash
+        let tg = window.Telegram.WebApp;
+        tg.expand(); // To'liq ekranga ochish
+
+        // Agar foydalanuvchi Telegram orqali kirgan bo'lsa, ma'lumotlarini chiqarish
+        if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+            let user = tg.initDataUnsafe.user;
+            let firstName = user.first_name || "Gamer";
+            let username = user.username ? "@" + user.username : "@rex0uz mijozi";
+            
+            document.getElementById('tgName').innerText = "Salom, " + firstName + "!";
+            document.getElementById('tgUsername').innerText = username;
+
+            // Agar foydalanuvchining rasmi bo'lsa
+            if (user.photo_url) {
+                document.getElementById('tgAvatar').innerHTML = `<img src="${user.photo_url}" alt="Avatar" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">`;
+            } else {
+                // Agar rasm bo'lmasa ismining birinchi harfini qo'yish
+                document.getElementById('tgAvatar').innerText = firstName.charAt(0).toUpperCase();
+            }
+        }
+    </script>
+</body>
+</html>
